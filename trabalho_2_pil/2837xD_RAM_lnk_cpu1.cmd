@@ -115,6 +115,11 @@ SECTIONS
    Cla1ToCpuMsgRAM  : > CLA1_MSGRAMLOW,   PAGE = 1
    CpuToCla1MsgRAM  : > CLA1_MSGRAMHIGH,  PAGE = 1
 
+   /* CLA sin and cos LUT*/
+   CLA1mathTables : > RAMLS1, PAGE = 1
+   .scratchpad   : > RAMLS1, PAGE = 1
+
+
    /* The following section definition are for SDFM examples */
    Filter1_RegsFile : > RAMGS1,	PAGE = 1, fill=0x1111
    Filter2_RegsFile : > RAMGS2,	PAGE = 1, fill=0x2222

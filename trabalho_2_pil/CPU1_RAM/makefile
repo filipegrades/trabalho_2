@@ -10,10 +10,10 @@ GEN_OPTS__FLAG := --cmd_file="syscfg/board.opt" --cmd_file="syscfg/c2000ware_lib
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
-"./syscfg/board.obj" \
-"./syscfg/c2000ware_libraries.obj" \
 "./main.obj" \
 "./tasks.obj" \
+"./syscfg/board.obj" \
+"./syscfg/c2000ware_libraries.obj" \
 "./device/F2837xD_CodeStartBranch.obj" \
 "./device/device.obj" \
 "./src/scicomm.obj" \
@@ -21,6 +21,7 @@ ORDERED_OBJS += \
 "C:/ti/C2000Ware_26_00_00_00/driverlib/f2837xd/driverlib/ccs/Debug/driverlib.lib" \
 $(GEN_CMDS__FLAG) \
 -llibc.a \
+-l"C:/ti/C2000Ware_26_00_00_00/libraries/math/CLAmath/c28/lib/cla1_math_library_fpu32_eabi.lib" \
 
 -include ../makefile.init
 
@@ -125,28 +126,28 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXE_OUTPUTS += \
-control_pil_atividade.out 
+trabalho_2_PIL.out 
 
 EXE_OUTPUTS__QUOTED += \
-"control_pil_atividade.out" 
+"trabalho_2_PIL.out" 
 
 
 # All Target
 all: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
-	@$(MAKE) --no-print-directory -Onone "control_pil_atividade.out"
+	@$(MAKE) --no-print-directory -Onone "trabalho_2_PIL.out"
 
 # Tool invocations
-control_pil_atividade.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
+trabalho_2_PIL.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'C2000 Linker - building target: "$@"'
-	"C:/ti/ccs2050/ccs/tools/compiler/ti-cgt-c2000_25.11.0.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla2 --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu2 -Ooff --define=_LAUNCHXL_F28379D --define=DEBUG --define=CPU1 --define=RAM --c99 --diag_suppress=10063 --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi -z -m"control_pil_atividade.map" --heap_size=0x100 --stack_size=0x200 --warn_sections -i"G:/Meu Drive/UFJF/Doutorado/2026.1/Codigos_TSeISEpEP/control_pil_atividade/src" -i"C:/ti/ccs2050/ccs/tools/compiler/ti-cgt-c2000_25.11.0.LTS/lib" -i"C:/ti/C2000Ware_26_00_00_00" -i"G:/Meu Drive/UFJF/Doutorado/2026.1/Codigos_TSeISEpEP/control_pil_atividade/CPU1_RAM/syscfg" -i"C:/ti/ccs2050/ccs/tools/compiler/ti-cgt-c2000_25.11.0.LTS/include" --reread_libs --define=RAM --diag_wrap=off --display_error_number --xml_link_info="control_pil_atividade_linkInfo.xml" --entry_point=code_start --rom_model -o "control_pil_atividade.out" $(ORDERED_OBJS)
+	"C:/ti/ccs2050/ccs/tools/compiler/ti-cgt-c2000_25.11.0.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla2 --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu2 -Ooff --define=_LAUNCHXL_F28379D --define=DEBUG --define=CPU1 --define=RAM --c99 --diag_suppress=10063 --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi -z -m"trabalho_2_PIL.map" --heap_size=0x100 --stack_size=0x200 --warn_sections -i"G:/Meu Drive/UFJF/Doutorado/2026.1/Codigos_TSeISEpEP/trabalho_2/trabalho_2_pil/src" -i"C:/ti/ccs2050/ccs/tools/compiler/ti-cgt-c2000_25.11.0.LTS/lib" -i"C:/ti/C2000Ware_26_00_00_00" -i"G:/Meu Drive/UFJF/Doutorado/2026.1/Codigos_TSeISEpEP/trabalho_2/trabalho_2_pil/CPU1_RAM/syscfg" -i"C:/ti/ccs2050/ccs/tools/compiler/ti-cgt-c2000_25.11.0.LTS/include" -i"C:/ti/C2000Ware_26_00_00_00/libraries/math/CLAmath/c28/lib" --reread_libs --define=RAM --diag_wrap=off --display_error_number --xml_link_info="trabalho_2_PIL_linkInfo.xml" --entry_point=code_start --rom_model -o "trabalho_2_PIL.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
 # Other Targets
 clean:
 	-$(RM) $(GEN_MISC_FILES__QUOTED)$(GEN_FILES__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "syscfg\board.obj" "syscfg\c2000ware_libraries.obj" "main.obj" "tasks.obj" "device\F2837xD_CodeStartBranch.obj" "device\device.obj" "src\scicomm.obj" 
-	-$(RM) "syscfg\board.d" "syscfg\c2000ware_libraries.d" "main.d" "device\device.d" "src\scicomm.d" 
+	-$(RM) "main.obj" "tasks.obj" "syscfg\board.obj" "syscfg\c2000ware_libraries.obj" "device\F2837xD_CodeStartBranch.obj" "device\device.obj" "src\scicomm.obj" 
+	-$(RM) "main.d" "syscfg\board.d" "syscfg\c2000ware_libraries.d" "device\device.d" "src\scicomm.d" 
 	-$(RM) "tasks.d" 
 	-$(RM) "device\F2837xD_CodeStartBranch.d" 
 	-$(RMDIR) $(GEN_MISC_DIRS__QUOTED)

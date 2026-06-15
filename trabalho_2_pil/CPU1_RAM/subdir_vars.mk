@@ -9,7 +9,7 @@ CMD_SRCS += \
 ../2837xD_RAM_lnk_cpu1.cmd 
 
 SYSCFG_SRCS += \
-../control_pil.syscfg 
+../trabalho_2_pil.syscfg 
 
 CLA_SRCS += \
 ../tasks.cla 
@@ -18,9 +18,9 @@ LIB_SRCS += \
 C:/ti/C2000Ware_26_00_00_00/driverlib/f2837xd/driverlib/ccs/Debug/driverlib.lib 
 
 C_SRCS += \
+../main.c \
 ./syscfg/board.c \
-./syscfg/c2000ware_libraries.c \
-../main.c 
+./syscfg/c2000ware_libraries.c 
 
 GEN_FILES += \
 ./syscfg/board.c \
@@ -35,19 +35,19 @@ GEN_MISC_DIRS += \
 ./syscfg 
 
 C_DEPS += \
+./main.d \
 ./syscfg/board.d \
-./syscfg/c2000ware_libraries.d \
-./main.d 
+./syscfg/c2000ware_libraries.d 
 
 GEN_OPTS += \
 ./syscfg/board.opt \
 ./syscfg/c2000ware_libraries.opt 
 
 OBJS += \
-./syscfg/board.obj \
-./syscfg/c2000ware_libraries.obj \
 ./main.obj \
-./tasks.obj 
+./tasks.obj \
+./syscfg/board.obj \
+./syscfg/c2000ware_libraries.obj 
 
 GEN_MISC_FILES += \
 ./syscfg/board.h \
@@ -62,10 +62,10 @@ GEN_MISC_DIRS__QUOTED += \
 "syscfg" 
 
 OBJS__QUOTED += \
-"syscfg\board.obj" \
-"syscfg\c2000ware_libraries.obj" \
 "main.obj" \
-"tasks.obj" 
+"tasks.obj" \
+"syscfg\board.obj" \
+"syscfg\c2000ware_libraries.obj" 
 
 GEN_MISC_FILES__QUOTED += \
 "syscfg\board.h" \
@@ -77,9 +77,9 @@ GEN_MISC_FILES__QUOTED += \
 "syscfg\clocktree.h" 
 
 C_DEPS__QUOTED += \
+"main.d" \
 "syscfg\board.d" \
-"syscfg\c2000ware_libraries.d" \
-"main.d" 
+"syscfg\c2000ware_libraries.d" 
 
 GEN_FILES__QUOTED += \
 "syscfg\board.c" \
@@ -90,12 +90,12 @@ GEN_FILES__QUOTED += \
 CLA_DEPS__QUOTED += \
 "tasks.d" 
 
-SYSCFG_SRCS__QUOTED += \
-"../control_pil.syscfg" 
-
 C_SRCS__QUOTED += \
+"../main.c" \
 "./syscfg/board.c" \
-"./syscfg/c2000ware_libraries.c" \
-"../main.c" 
+"./syscfg/c2000ware_libraries.c" 
+
+SYSCFG_SRCS__QUOTED += \
+"../trabalho_2_pil.syscfg" 
 
 
