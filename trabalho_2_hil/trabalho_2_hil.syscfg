@@ -9,11 +9,13 @@
 /**
  * Import the modules used in this configuration.
  */
-const cla    = scripting.addModule("/driverlib/cla.js", {}, false);
-const cla1   = cla.addInstance();
-const memcfg = scripting.addModule("/driverlib/memcfg.js");
-const sci    = scripting.addModule("/driverlib/sci.js", {}, false);
-const sci1   = sci.addInstance();
+const cla       = scripting.addModule("/driverlib/cla.js", {}, false);
+const cla1      = cla.addInstance();
+const cputimer  = scripting.addModule("/driverlib/cputimer.js", {}, false);
+const cputimer1 = cputimer.addInstance();
+const memcfg    = scripting.addModule("/driverlib/memcfg.js");
+const sci       = scripting.addModule("/driverlib/sci.js", {}, false);
+const sci1      = sci.addInstance();
 
 /**
  * Write custom configuration values to the imported modules.
@@ -33,6 +35,13 @@ cla1.cpuint_CLA_TASK_5 = false;
 cla1.cpuint_CLA_TASK_6 = false;
 cla1.cpuint_CLA_TASK_7 = false;
 cla1.cpuint_CLA_TASK_8 = false;
+
+cputimer1.$name                    = "myCPUTIMER0";
+cputimer1.timerPeriod              = 499;
+cputimer1.enableInterrupt          = true;
+cputimer1.startTimer               = true;
+cputimer1.registerInterrupts       = true;
+cputimer1.timerInt.enableInterrupt = true;
 
 memcfg.config_MEMCFG_SECT_LS1 = "CLA_data";
 memcfg.config_MEMCFG_SECT_LS4 = "CLA_prog";

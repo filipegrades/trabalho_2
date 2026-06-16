@@ -126,20 +126,20 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXE_OUTPUTS += \
-trabalho_2_PIL.out 
+trabalho_2_hil.out 
 
 EXE_OUTPUTS__QUOTED += \
-"trabalho_2_PIL.out" 
+"trabalho_2_hil.out" 
 
 
 # All Target
 all: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
-	@$(MAKE) --no-print-directory -Onone "trabalho_2_PIL.out"
+	@$(MAKE) --no-print-directory -Onone "trabalho_2_hil.out"
 
 # Tool invocations
-trabalho_2_PIL.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
+trabalho_2_hil.out: $(OBJS) $(CMD_SRCS) $(LIB_SRCS) $(GEN_CMDS)
 	@echo 'C2000 Linker - building target: "$@"'
-	"C:/ti/ccs2050/ccs/tools/compiler/ti-cgt-c2000_25.11.0.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla2 --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu2 -Ooff --define=_LAUNCHXL_F28379D --define=DEBUG --define=CPU1 --define=RAM --c99 --diag_suppress=10063 --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi -z -m"trabalho_2_PIL.map" --heap_size=0x100 --stack_size=0x200 --warn_sections -i"G:/Meu Drive/UFJF/Doutorado/2026.1/Codigos_TSeISEpEP/trabalho_2/trabalho_2_pil/src" -i"C:/ti/ccs2050/ccs/tools/compiler/ti-cgt-c2000_25.11.0.LTS/lib" -i"C:/ti/C2000Ware_26_00_00_00" -i"G:/Meu Drive/UFJF/Doutorado/2026.1/Codigos_TSeISEpEP/trabalho_2/trabalho_2_pil/CPU1_RAM/syscfg" -i"C:/ti/ccs2050/ccs/tools/compiler/ti-cgt-c2000_25.11.0.LTS/include" -i"C:/ti/C2000Ware_26_00_00_00/libraries/math/CLAmath/c28/lib" --reread_libs --define=RAM --diag_wrap=off --display_error_number --xml_link_info="trabalho_2_PIL_linkInfo.xml" --entry_point=code_start --rom_model -o "trabalho_2_PIL.out" $(ORDERED_OBJS)
+	"C:/ti/ccs2050/ccs/tools/compiler/ti-cgt-c2000_25.11.0.LTS/bin/cl2000" -v28 -ml -mt --cla_support=cla2 --float_support=fpu32 --tmu_support=tmu0 --vcu_support=vcu2 -Ooff --define=_LAUNCHXL_F28379D --define=DEBUG --define=CPU1 --define=RAM --c99 --diag_suppress=10063 --diag_warning=225 --diag_wrap=off --display_error_number --gen_func_subsections=on --abi=eabi -z -m"trabalho_2_hil.map" --heap_size=0x100 --stack_size=0x200 --warn_sections -i"G:/Meu Drive/UFJF/Doutorado/2026.1/Codigos_TSeISEpEP/trabalho_2/trabalho_2_hil/src" -i"C:/ti/ccs2050/ccs/tools/compiler/ti-cgt-c2000_25.11.0.LTS/lib" -i"C:/ti/C2000Ware_26_00_00_00" -i"G:/Meu Drive/UFJF/Doutorado/2026.1/Codigos_TSeISEpEP/trabalho_2/trabalho_2_hil/CPU1_RAM/syscfg" -i"C:/ti/ccs2050/ccs/tools/compiler/ti-cgt-c2000_25.11.0.LTS/include" -i"C:/ti/C2000Ware_26_00_00_00/libraries/math/CLAmath/c28/lib" --reread_libs --define=RAM --diag_wrap=off --display_error_number --xml_link_info="trabalho_2_hil_linkInfo.xml" --entry_point=code_start --rom_model -o "trabalho_2_hil.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 

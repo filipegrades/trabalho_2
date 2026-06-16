@@ -9,7 +9,7 @@ CMD_SRCS += \
 ../2837xD_RAM_lnk_cpu1.cmd 
 
 SYSCFG_SRCS += \
-../trabalho_2_pil.syscfg 
+../trabalho_2_hil.syscfg 
 
 CLA_SRCS += \
 ../tasks.cla 
@@ -96,6 +96,6 @@ C_SRCS__QUOTED += \
 "./syscfg/c2000ware_libraries.c" 
 
 SYSCFG_SRCS__QUOTED += \
-"../trabalho_2_pil.syscfg" 
+"../trabalho_2_hil.syscfg" 
 
 
