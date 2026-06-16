@@ -19,6 +19,13 @@
 #define km2 ((dT*vdc)/(4*L+2*dT*R))
 #define km3 (dT/(4*L+2*dT*R))
 #define TAMANHO_BUFFER 100
+#define MAXDAC 4095
+#define OFFSETVT 350
+#define MAXVT (2*OFFSETVT)
+#define GANHODACVT (MAXDAC/MAXVT)
+#define OFFSETIL 150
+#define MAXIL (2*OFFSETIL)
+#define GANHODACIL (MAXDAC/MAXIL)
 
 
 #pragma DATA_SECTION(e,"Cla1ToCpuMsgRAM");
@@ -108,6 +115,8 @@ __interrupt void cla1Isr1()
 __interrupt void INT_myCPUTIMER0_ISR()
 {
     habilitaCalculo = true;
+    DAC_setShadowValue(myDAC0_BASE, (uint16_t)(GANHODACIL*(il[0]+OFFSETIL)));
+    DAC_setShadowValue(myDAC1_BASE, (uint16_t)(GANHODACVT*(vt[0]+OFFSETVT)));
     Interrupt_clearACKGroup(INT_myCPUTIMER0_INTERRUPT_ACK_GROUP);
 }
 

@@ -116,6 +116,16 @@ void myCPUTIMER0_init();
 
 //*****************************************************************************
 //
+// DAC Configurations
+//
+//*****************************************************************************
+#define myDAC0_BASE DACA_BASE
+void myDAC0_init();
+#define myDAC1_BASE DACB_BASE
+void myDAC1_init();
+
+//*****************************************************************************
+//
 // GPIO Configurations
 //
 //*****************************************************************************
@@ -240,6 +250,7 @@ void S4_XINT_init();
 void	Board_init();
 void	CLA_init();
 void	CPUTIMER_init();
+void	DAC_init();
 void	GPIO_init();
 void	INPUTXBAR_init();
 void	INTERRUPT_init();

@@ -13,6 +13,9 @@ const cla              = scripting.addModule("/driverlib/cla.js", {}, false);
 const cla1             = cla.addInstance();
 const cputimer         = scripting.addModule("/driverlib/cputimer.js", {}, false);
 const cputimer1        = cputimer.addInstance();
+const dac              = scripting.addModule("/driverlib/dac.js", {}, false);
+const dac1             = dac.addInstance();
+const dac2             = dac.addInstance();
 const gpio             = scripting.addModule("/driverlib/gpio.js", {}, false);
 const gpio1            = gpio.addInstance();
 const gpio2            = gpio.addInstance();
@@ -52,6 +55,15 @@ cputimer1.enableInterrupt          = true;
 cputimer1.startTimer               = true;
 cputimer1.registerInterrupts       = true;
 cputimer1.timerInt.enableInterrupt = true;
+
+dac1.$name            = "myDAC0";
+dac1.enableOutput     = true;
+dac1.referenceVoltage = "DAC_REF_ADC_VREFHI";
+
+dac2.$name            = "myDAC1";
+dac2.enableOutput     = true;
+dac2.referenceVoltage = "DAC_REF_ADC_VREFHI";
+dac2.dacBase          = "DACB_BASE";
 
 gpio1.$name                     = "S1";
 gpio1.useInterrupt              = true;

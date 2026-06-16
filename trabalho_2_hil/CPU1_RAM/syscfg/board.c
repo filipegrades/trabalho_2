@@ -52,6 +52,7 @@ void Board_init()
 	CLA_init();
 	MEMCFG_init();
 	CPUTIMER_init();
+	DAC_init();
 	GPIO_init();
 	SCI_init();
 	XINT_init();
@@ -165,6 +166,63 @@ void myCPUTIMER0_init(){
 
 	CPUTimer_reloadTimerCounter(myCPUTIMER0_BASE);
 	CPUTimer_startTimer(myCPUTIMER0_BASE);
+}
+
+//*****************************************************************************
+//
+// DAC Configurations
+//
+//*****************************************************************************
+void DAC_init(){
+	myDAC0_init();
+	myDAC1_init();
+}
+
+void myDAC0_init(){
+	//
+	// Set DAC reference voltage.
+	//
+	DAC_setReferenceVoltage(myDAC0_BASE, DAC_REF_ADC_VREFHI);
+	//
+	// Set DAC load mode.
+	//
+	DAC_setLoadMode(myDAC0_BASE, DAC_LOAD_SYSCLK);
+	//
+	// Enable the DAC output
+	//
+	DAC_enableOutput(myDAC0_BASE);
+	//
+	// Set the DAC shadow output
+	//
+	DAC_setShadowValue(myDAC0_BASE, 0U);
+
+	//
+	// Delay for buffered DAC to power up.
+	//
+	DEVICE_DELAY_US(500);
+}
+void myDAC1_init(){
+	//
+	// Set DAC reference voltage.
+	//
+	DAC_setReferenceVoltage(myDAC1_BASE, DAC_REF_ADC_VREFHI);
+	//
+	// Set DAC load mode.
+	//
+	DAC_setLoadMode(myDAC1_BASE, DAC_LOAD_SYSCLK);
+	//
+	// Enable the DAC output
+	//
+	DAC_enableOutput(myDAC1_BASE);
+	//
+	// Set the DAC shadow output
+	//
+	DAC_setShadowValue(myDAC1_BASE, 0U);
+
+	//
+	// Delay for buffered DAC to power up.
+	//
+	DEVICE_DELAY_US(500);
 }
 
 //*****************************************************************************
