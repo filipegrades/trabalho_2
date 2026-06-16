@@ -57,6 +57,22 @@ extern "C"
 // PinMux Configurations
 //
 //*****************************************************************************
+//
+// GPIO6 - GPIO Settings
+//
+#define S1_GPIO_PIN_CONFIG GPIO_6_GPIO6
+//
+// GPIO7 - GPIO Settings
+//
+#define S2_GPIO_PIN_CONFIG GPIO_7_GPIO7
+//
+// GPIO8 - GPIO Settings
+//
+#define S3_GPIO_PIN_CONFIG GPIO_8_GPIO8
+//
+// GPIO9 - GPIO Settings
+//
+#define S4_GPIO_PIN_CONFIG GPIO_9_GPIO9
 
 //
 // SCIA -> SCI0 Pinmux
@@ -100,6 +116,38 @@ void myCPUTIMER0_init();
 
 //*****************************************************************************
 //
+// GPIO Configurations
+//
+//*****************************************************************************
+#define S1 6
+void S1_init();
+#define S2 7
+void S2_init();
+#define S3 8
+void S3_init();
+#define S4 9
+void S4_init();
+
+//*****************************************************************************
+//
+// INPUTXBAR Configurations
+//
+//*****************************************************************************
+#define myINPUTXBARINPUT0_SOURCE 6
+#define myINPUTXBARINPUT0_INPUT XBAR_INPUT4
+void myINPUTXBARINPUT0_init();
+#define myINPUTXBARINPUT1_SOURCE 7
+#define myINPUTXBARINPUT1_INPUT XBAR_INPUT5
+void myINPUTXBARINPUT1_init();
+#define myINPUTXBARINPUT2_SOURCE 8
+#define myINPUTXBARINPUT2_INPUT XBAR_INPUT6
+void myINPUTXBARINPUT2_init();
+#define myINPUTXBARINPUT3_SOURCE 9
+#define myINPUTXBARINPUT3_INPUT XBAR_INPUT13
+void myINPUTXBARINPUT3_init();
+
+//*****************************************************************************
+//
 // INTERRUPT Configurations
 //
 //*****************************************************************************
@@ -115,6 +163,30 @@ extern __interrupt void cla1Isr1(void);
 #define INT_myCPUTIMER0 INT_TIMER0
 #define INT_myCPUTIMER0_INTERRUPT_ACK_GROUP INTERRUPT_ACK_GROUP1
 extern __interrupt void INT_myCPUTIMER0_ISR(void);
+
+// Interrupt Settings for INT_S1_XINT
+// ISR need to be defined for the registered interrupts
+#define INT_S1_XINT INT_XINT1
+#define INT_S1_XINT_INTERRUPT_ACK_GROUP INTERRUPT_ACK_GROUP1
+extern __interrupt void INT_S1_XINT_ISR(void);
+
+// Interrupt Settings for INT_S2_XINT
+// ISR need to be defined for the registered interrupts
+#define INT_S2_XINT INT_XINT2
+#define INT_S2_XINT_INTERRUPT_ACK_GROUP INTERRUPT_ACK_GROUP1
+extern __interrupt void INT_S2_XINT_ISR(void);
+
+// Interrupt Settings for INT_S3_XINT
+// ISR need to be defined for the registered interrupts
+#define INT_S3_XINT INT_XINT3
+#define INT_S3_XINT_INTERRUPT_ACK_GROUP INTERRUPT_ACK_GROUP12
+extern __interrupt void INT_S3_XINT_ISR(void);
+
+// Interrupt Settings for INT_S4_XINT
+// ISR need to be defined for the registered interrupts
+#define INT_S4_XINT INT_XINT4
+#define INT_S4_XINT_INTERRUPT_ACK_GROUP INTERRUPT_ACK_GROUP12
+extern __interrupt void INT_S4_XINT_ISR(void);
 
 // Interrupt Settings for INT_SCI0_RX
 // ISR need to be defined for the registered interrupts
@@ -144,15 +216,36 @@ void SCI0_init();
 
 //*****************************************************************************
 //
+// XINT Configurations
+//
+//*****************************************************************************
+#define S1_XINT GPIO_INT_XINT1
+#define S1_XINT_TYPE GPIO_INT_TYPE_BOTH_EDGES
+void S1_XINT_init();
+#define S2_XINT GPIO_INT_XINT2
+#define S2_XINT_TYPE GPIO_INT_TYPE_BOTH_EDGES
+void S2_XINT_init();
+#define S3_XINT GPIO_INT_XINT3
+#define S3_XINT_TYPE GPIO_INT_TYPE_BOTH_EDGES
+void S3_XINT_init();
+#define S4_XINT GPIO_INT_XINT4
+#define S4_XINT_TYPE GPIO_INT_TYPE_BOTH_EDGES
+void S4_XINT_init();
+
+//*****************************************************************************
+//
 // Board Configurations
 //
 //*****************************************************************************
 void	Board_init();
 void	CLA_init();
 void	CPUTIMER_init();
+void	GPIO_init();
+void	INPUTXBAR_init();
 void	INTERRUPT_init();
 void	MEMCFG_init();
 void	SCI_init();
+void	XINT_init();
 void	PinMux_init();
 
 //*****************************************************************************

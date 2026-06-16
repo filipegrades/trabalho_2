@@ -18,6 +18,7 @@
 #define km1 ((2*L-dT*R)/(2*L+dT*R))
 #define km2 ((dT*vdc)/(4*L+2*dT*R))
 #define km3 (dT/(4*L+2*dT*R))
+#define TAMANHO_BUFFER 100
 
 
 #pragma DATA_SECTION(e,"Cla1ToCpuMsgRAM");
@@ -47,9 +48,10 @@ float vt_dTheta = 2*pi*fg*dT;
 float vt_theta = 0.0;
 float vt_phi = 0.0;
 bool habilitaCalculo = false;
-unsigned int cont = 0;
-unsigned int cont2 = 0;
 
+float vt_buffer[TAMANHO_BUFFER];
+float il_buffer[TAMANHO_BUFFER];
+unsigned int cont_buffer = 0;
 //
 // Funcao Principal
 //
@@ -77,7 +79,9 @@ void main(void)
             S[1] = S[0];
             il[1] = il[0];
             vt[1] = vt[0];
-            cont2 += 1;
+            vt_buffer[cont_buffer] = vt[0];
+            il_buffer[cont_buffer] = il[0];
+            cont_buffer = (cont_buffer+1)%TAMANHO_BUFFER;
         }
     }
 }
@@ -104,6 +108,29 @@ __interrupt void cla1Isr1()
 __interrupt void INT_myCPUTIMER0_ISR()
 {
     habilitaCalculo = true;
-    cont += 1;
     Interrupt_clearACKGroup(INT_myCPUTIMER0_INTERRUPT_ACK_GROUP);
+}
+
+__interrupt void INT_S1_XINT_ISR()
+{
+    Si[0] = GPIO_readPin(S1);
+    Interrupt_clearACKGroup(INT_S1_XINT_INTERRUPT_ACK_GROUP);
+}
+
+__interrupt void INT_S2_XINT_ISR()
+{
+    Si[1] = GPIO_readPin(S2);
+    Interrupt_clearACKGroup(INT_S2_XINT_INTERRUPT_ACK_GROUP);
+}
+
+__interrupt void INT_S3_XINT_ISR()
+{
+    Si[2] = GPIO_readPin(S3);
+    Interrupt_clearACKGroup(INT_S3_XINT_INTERRUPT_ACK_GROUP);
+}
+
+__interrupt void INT_S4_XINT_ISR()
+{
+    Si[3] = GPIO_readPin(S4);
+    Interrupt_clearACKGroup(INT_S4_XINT_INTERRUPT_ACK_GROUP);
 }

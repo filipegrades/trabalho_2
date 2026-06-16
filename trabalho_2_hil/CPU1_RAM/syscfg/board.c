@@ -48,10 +48,13 @@ void Board_init()
 	EALLOW;
 
 	PinMux_init();
+	INPUTXBAR_init();
 	CLA_init();
 	MEMCFG_init();
 	CPUTIMER_init();
+	GPIO_init();
 	SCI_init();
+	XINT_init();
 	INTERRUPT_init();
 
 	EDIS;
@@ -68,6 +71,14 @@ void PinMux_init()
 	// PinMux for modules assigned to CPU1
 	//
 
+	// GPIO6 -> S1 Pinmux
+	GPIO_setPinConfig(GPIO_6_GPIO6);
+	// GPIO7 -> S2 Pinmux
+	GPIO_setPinConfig(GPIO_7_GPIO7);
+	// GPIO8 -> S3 Pinmux
+	GPIO_setPinConfig(GPIO_8_GPIO8);
+	// GPIO9 -> S4 Pinmux
+	GPIO_setPinConfig(GPIO_9_GPIO9);
 	//
 	// SCIA -> SCI0 Pinmux
 	//
@@ -158,6 +169,68 @@ void myCPUTIMER0_init(){
 
 //*****************************************************************************
 //
+// GPIO Configurations
+//
+//*****************************************************************************
+void GPIO_init(){
+	S1_init();
+	S2_init();
+	S3_init();
+	S4_init();
+}
+
+void S1_init(){
+	GPIO_setPadConfig(S1, GPIO_PIN_TYPE_STD);
+	GPIO_setQualificationMode(S1, GPIO_QUAL_SYNC);
+	GPIO_setDirectionMode(S1, GPIO_DIR_MODE_IN);
+	GPIO_setControllerCore(S1, GPIO_CORE_CPU1);
+}
+void S2_init(){
+	GPIO_setPadConfig(S2, GPIO_PIN_TYPE_STD);
+	GPIO_setQualificationMode(S2, GPIO_QUAL_SYNC);
+	GPIO_setDirectionMode(S2, GPIO_DIR_MODE_IN);
+	GPIO_setControllerCore(S2, GPIO_CORE_CPU1);
+}
+void S3_init(){
+	GPIO_setPadConfig(S3, GPIO_PIN_TYPE_STD);
+	GPIO_setQualificationMode(S3, GPIO_QUAL_SYNC);
+	GPIO_setDirectionMode(S3, GPIO_DIR_MODE_IN);
+	GPIO_setControllerCore(S3, GPIO_CORE_CPU1);
+}
+void S4_init(){
+	GPIO_setPadConfig(S4, GPIO_PIN_TYPE_STD);
+	GPIO_setQualificationMode(S4, GPIO_QUAL_SYNC);
+	GPIO_setDirectionMode(S4, GPIO_DIR_MODE_IN);
+	GPIO_setControllerCore(S4, GPIO_CORE_CPU1);
+}
+
+//*****************************************************************************
+//
+// INPUTXBAR Configurations
+//
+//*****************************************************************************
+void INPUTXBAR_init(){
+	myINPUTXBARINPUT0_init();
+	myINPUTXBARINPUT1_init();
+	myINPUTXBARINPUT2_init();
+	myINPUTXBARINPUT3_init();
+}
+
+void myINPUTXBARINPUT0_init(){
+	XBAR_setInputPin(myINPUTXBARINPUT0_INPUT, myINPUTXBARINPUT0_SOURCE);
+}
+void myINPUTXBARINPUT1_init(){
+	XBAR_setInputPin(myINPUTXBARINPUT1_INPUT, myINPUTXBARINPUT1_SOURCE);
+}
+void myINPUTXBARINPUT2_init(){
+	XBAR_setInputPin(myINPUTXBARINPUT2_INPUT, myINPUTXBARINPUT2_SOURCE);
+}
+void myINPUTXBARINPUT3_init(){
+	XBAR_setInputPin(myINPUTXBARINPUT3_INPUT, myINPUTXBARINPUT3_SOURCE);
+}
+
+//*****************************************************************************
+//
 // INTERRUPT Configurations
 //
 //*****************************************************************************
@@ -172,6 +245,26 @@ void INTERRUPT_init(){
 	// ISR need to be defined for the registered interrupts
 	Interrupt_register(INT_myCPUTIMER0, &INT_myCPUTIMER0_ISR);
 	Interrupt_enable(INT_myCPUTIMER0);
+	
+	// Interrupt Settings for INT_S1_XINT
+	// ISR need to be defined for the registered interrupts
+	Interrupt_register(INT_S1_XINT, &INT_S1_XINT_ISR);
+	Interrupt_enable(INT_S1_XINT);
+	
+	// Interrupt Settings for INT_S2_XINT
+	// ISR need to be defined for the registered interrupts
+	Interrupt_register(INT_S2_XINT, &INT_S2_XINT_ISR);
+	Interrupt_enable(INT_S2_XINT);
+	
+	// Interrupt Settings for INT_S3_XINT
+	// ISR need to be defined for the registered interrupts
+	Interrupt_register(INT_S3_XINT, &INT_S3_XINT_ISR);
+	Interrupt_enable(INT_S3_XINT);
+	
+	// Interrupt Settings for INT_S4_XINT
+	// ISR need to be defined for the registered interrupts
+	Interrupt_register(INT_S4_XINT, &INT_S4_XINT_ISR);
+	Interrupt_enable(INT_S4_XINT);
 	
 	// Interrupt Settings for INT_SCI0_RX
 	// ISR need to be defined for the registered interrupts
@@ -284,5 +377,38 @@ void SCI0_init(){
 	SCI_setFIFOInterruptLevel(SCI0_BASE, SCI_FIFO_TX0, SCI_FIFO_RX4);
 	SCI_enableFIFO(SCI0_BASE);
 	SCI_enableModule(SCI0_BASE);
+}
+
+//*****************************************************************************
+//
+// XINT Configurations
+//
+//*****************************************************************************
+void XINT_init(){
+	S1_XINT_init();
+	S2_XINT_init();
+	S3_XINT_init();
+	S4_XINT_init();
+}
+
+void S1_XINT_init(){
+	GPIO_setInterruptType(S1_XINT, GPIO_INT_TYPE_BOTH_EDGES);
+	GPIO_setInterruptPin(S1, S1_XINT);
+	GPIO_enableInterrupt(S1_XINT);
+}
+void S2_XINT_init(){
+	GPIO_setInterruptType(S2_XINT, GPIO_INT_TYPE_BOTH_EDGES);
+	GPIO_setInterruptPin(S2, S2_XINT);
+	GPIO_enableInterrupt(S2_XINT);
+}
+void S3_XINT_init(){
+	GPIO_setInterruptType(S3_XINT, GPIO_INT_TYPE_BOTH_EDGES);
+	GPIO_setInterruptPin(S3, S3_XINT);
+	GPIO_enableInterrupt(S3_XINT);
+}
+void S4_XINT_init(){
+	GPIO_setInterruptType(S4_XINT, GPIO_INT_TYPE_BOTH_EDGES);
+	GPIO_setInterruptPin(S4, S4_XINT);
+	GPIO_enableInterrupt(S4_XINT);
 }
 
