@@ -55,6 +55,7 @@ float vt_dTheta = 2*pi*fg*dT;
 float vt_theta = 0.0;
 float vt_phi = 0.0;
 bool habilitaCalculo = false;
+float dutya, dutyb;
 
 float vt_buffer[TAMANHO_BUFFER];
 float il_buffer[TAMANHO_BUFFER];
@@ -89,6 +90,8 @@ void main(void)
             vt_buffer[cont_buffer] = vt[0];
             il_buffer[cont_buffer] = il[0];
             cont_buffer = (cont_buffer+1)%TAMANHO_BUFFER;
+            EPWM_setCounterCompareValue(EPWM_S12_BASE, EPWM_COUNTER_COMPARE_A, (uint16_t)(dutya*5000));
+            EPWM_setCounterCompareValue(EPWM_S34_BASE, EPWM_COUNTER_COMPARE_A, (uint16_t)(dutya*5000));
         }
     }
 }

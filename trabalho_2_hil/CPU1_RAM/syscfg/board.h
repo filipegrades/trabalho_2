@@ -57,6 +57,38 @@ extern "C"
 // PinMux Configurations
 //
 //*****************************************************************************
+
+//
+// EPWM1 -> EPWM_S12 Pinmux
+//
+//
+// EPWM1A - GPIO Settings
+//
+#define GPIO_PIN_EPWM1A 0
+#define EPWM_S12_EPWMA_GPIO 0
+#define EPWM_S12_EPWMA_PIN_CONFIG GPIO_0_EPWM1A
+//
+// EPWM1B - GPIO Settings
+//
+#define GPIO_PIN_EPWM1B 1
+#define EPWM_S12_EPWMB_GPIO 1
+#define EPWM_S12_EPWMB_PIN_CONFIG GPIO_1_EPWM1B
+
+//
+// EPWM2 -> EPWM_S34 Pinmux
+//
+//
+// EPWM2A - GPIO Settings
+//
+#define GPIO_PIN_EPWM2A 2
+#define EPWM_S34_EPWMA_GPIO 2
+#define EPWM_S34_EPWMA_PIN_CONFIG GPIO_2_EPWM2A
+//
+// EPWM2B - GPIO Settings
+//
+#define GPIO_PIN_EPWM2B 3
+#define EPWM_S34_EPWMB_GPIO 3
+#define EPWM_S34_EPWMB_PIN_CONFIG GPIO_3_EPWM2B
 //
 // GPIO6 - GPIO Settings
 //
@@ -123,6 +155,38 @@ void myCPUTIMER0_init();
 void myDAC0_init();
 #define myDAC1_BASE DACB_BASE
 void myDAC1_init();
+
+//*****************************************************************************
+//
+// EPWM Configurations
+//
+//*****************************************************************************
+#define EPWM_S12_BASE EPWM1_BASE
+#define EPWM_S12_TBPRD 5000
+#define EPWM_S12_COUNTER_MODE EPWM_COUNTER_MODE_UP_DOWN
+#define EPWM_S12_TBPHS 0
+#define EPWM_S12_CMPA 0
+#define EPWM_S12_CMPB 0
+#define EPWM_S12_CMPC 0
+#define EPWM_S12_CMPD 0
+#define EPWM_S12_DBRED 0
+#define EPWM_S12_DBFED 0
+#define EPWM_S12_TZA_ACTION EPWM_TZ_ACTION_HIGH_Z
+#define EPWM_S12_TZB_ACTION EPWM_TZ_ACTION_HIGH_Z
+#define EPWM_S12_INTERRUPT_SOURCE EPWM_INT_TBCTR_DISABLED
+#define EPWM_S34_BASE EPWM2_BASE
+#define EPWM_S34_TBPRD 5000
+#define EPWM_S34_COUNTER_MODE EPWM_COUNTER_MODE_UP_DOWN
+#define EPWM_S34_TBPHS 0
+#define EPWM_S34_CMPA 0
+#define EPWM_S34_CMPB 0
+#define EPWM_S34_CMPC 0
+#define EPWM_S34_CMPD 0
+#define EPWM_S34_DBRED 0
+#define EPWM_S34_DBFED 0
+#define EPWM_S34_TZA_ACTION EPWM_TZ_ACTION_HIGH_Z
+#define EPWM_S34_TZB_ACTION EPWM_TZ_ACTION_HIGH_Z
+#define EPWM_S34_INTERRUPT_SOURCE EPWM_INT_TBCTR_DISABLED
 
 //*****************************************************************************
 //
@@ -226,6 +290,12 @@ void SCI0_init();
 
 //*****************************************************************************
 //
+// SYNC Scheme Configurations
+//
+//*****************************************************************************
+
+//*****************************************************************************
+//
 // XINT Configurations
 //
 //*****************************************************************************
@@ -251,11 +321,13 @@ void	Board_init();
 void	CLA_init();
 void	CPUTIMER_init();
 void	DAC_init();
+void	EPWM_init();
 void	GPIO_init();
 void	INPUTXBAR_init();
 void	INTERRUPT_init();
 void	MEMCFG_init();
 void	SCI_init();
+void	SYNC_init();
 void	XINT_init();
 void	PinMux_init();
 
