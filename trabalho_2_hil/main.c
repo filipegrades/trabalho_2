@@ -44,6 +44,10 @@ float REF = 10.0f;
 float theta = 0.0f;
 #pragma DATA_SECTION(sref,"Cla1ToCpuMsgRAM");
 float sref;
+#pragma DATA_SECTION(adc_1,"Cla1ToCpuMsgRAM");
+float adc_1;
+#pragma DATA_SECTION(adc_2,"Cla1ToCpuMsgRAM");
+float adc_2;
 
 // Variaveis do modelo
 float il[2] = {0};
@@ -56,6 +60,7 @@ float vt_theta = 0.0;
 float vt_phi = 0.0;
 bool habilitaCalculo = false;
 float dutya, dutyb;
+int contadc = 0;
 
 float vt_buffer[TAMANHO_BUFFER];
 float il_buffer[TAMANHO_BUFFER];
@@ -115,7 +120,7 @@ __interrupt void cla1Isr1()
 
 __interrupt void INT_myCPUTIMER0_ISR()
 {
-    CLA_forceTasks(myCLA0_BASE,CLA_TASKFLAG_1);
+    //CLA_forceTasks(myCLA0_BASE,CLA_TASKFLAG_1);
     habilitaCalculo = true;
     DAC_setShadowValue(myDAC0_BASE, (uint16_t)(GANHODACIL*(il[0]+OFFSETIL)));
     DAC_setShadowValue(myDAC1_BASE, (uint16_t)(GANHODACVT*(vt[0]+OFFSETVT)));

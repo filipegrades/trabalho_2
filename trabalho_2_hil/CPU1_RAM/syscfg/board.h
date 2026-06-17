@@ -124,6 +124,26 @@ extern "C"
 
 //*****************************************************************************
 //
+// ADC Configurations
+//
+//*****************************************************************************
+#define ADC0_BASE ADCA_BASE
+#define ADC0_RESULT_BASE ADCARESULT_BASE
+#define ADC0_SOC0 ADC_SOC_NUMBER0
+#define ADC0_FORCE_SOC0 ADC_FORCE_SOC0
+#define ADC0_SAMPLE_WINDOW_SOC0 75
+#define ADC0_TRIGGER_SOURCE_SOC0 ADC_TRIGGER_EPWM1_SOCA
+#define ADC0_CHANNEL_SOC0 ADC_CH_ADCIN0
+#define ADC0_SOC1 ADC_SOC_NUMBER1
+#define ADC0_FORCE_SOC1 ADC_FORCE_SOC1
+#define ADC0_SAMPLE_WINDOW_SOC1 75
+#define ADC0_TRIGGER_SOURCE_SOC1 ADC_TRIGGER_EPWM1_SOCA
+#define ADC0_CHANNEL_SOC1 ADC_CH_ADCIN2
+void ADC0_init();
+
+
+//*****************************************************************************
+//
 // CLA Configurations
 //
 //*****************************************************************************
@@ -145,6 +165,8 @@ void myCLA0_init();
 //*****************************************************************************
 #define myCPUTIMER0_BASE CPUTIMER0_BASE
 void myCPUTIMER0_init();
+#define myCPUTIMER1_BASE CPUTIMER1_BASE
+void myCPUTIMER1_init();
 
 //*****************************************************************************
 //
@@ -318,6 +340,7 @@ void S4_XINT_init();
 //
 //*****************************************************************************
 void	Board_init();
+void	ADC_init();
 void	CLA_init();
 void	CPUTIMER_init();
 void	DAC_init();

@@ -16,5 +16,7 @@ extern float vg;
 extern float REF;
 extern float theta;
 extern float sref;
+extern float adc_1;
+extern float adc_2;
 
 #endif /* SHARED_VARS_H_ */

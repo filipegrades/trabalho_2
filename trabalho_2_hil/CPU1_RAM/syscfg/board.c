@@ -52,6 +52,7 @@ void Board_init()
 	SYNC_init();
 	CLA_init();
 	MEMCFG_init();
+	ADC_init();
 	CPUTIMER_init();
 	DAC_init();
 	EPWM_init();
@@ -120,6 +121,86 @@ void PinMux_init()
 
 //*****************************************************************************
 //
+// ADC Configurations
+//
+//*****************************************************************************
+void ADC_init(){
+	ADC0_init();
+}
+
+void ADC0_init(){
+	//
+	// Configures the analog-to-digital converter module prescaler.
+	//
+	ADC_setPrescaler(ADC0_BASE, ADC_CLK_DIV_4_0);
+	//
+	// Configures the analog-to-digital converter resolution and signal mode.
+	//
+	ADC_setMode(ADC0_BASE, ADC_RESOLUTION_12BIT, ADC_MODE_SINGLE_ENDED);
+	//
+	// Sets the timing of the end-of-conversion pulse
+	//
+	ADC_setInterruptPulseMode(ADC0_BASE, ADC_PULSE_END_OF_CONV);
+	//
+	// Powers up the analog-to-digital converter core.
+	//
+	ADC_enableConverter(ADC0_BASE);
+	//
+	// Delay for 1ms to allow ADC time to power up
+	//
+	DEVICE_DELAY_US(500);
+	//
+	// SOC Configuration: Setup ADC EPWM channel and trigger settings
+	//
+	// Disables SOC burst mode.
+	//
+	ADC_disableBurstMode(ADC0_BASE);
+	//
+	// Sets the priority mode of the SOCs.
+	//
+	ADC_setSOCPriority(ADC0_BASE, ADC_PRI_ALL_ROUND_ROBIN);
+	//
+	// Start of Conversion 0 Configuration
+	//
+	//
+	// Configures a start-of-conversion (SOC) in the ADC and its interrupt SOC trigger.
+	// 	  	SOC number		: 0
+	//	  	Trigger			: ADC_TRIGGER_EPWM1_SOCA
+	//	  	Channel			: ADC_CH_ADCIN0
+	//	 	Sample Window	: 15 SYSCLK cycles
+	//		Interrupt Trigger: ADC_INT_SOC_TRIGGER_NONE
+	//
+	ADC_setupSOC(ADC0_BASE, ADC_SOC_NUMBER0, ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN0, 15U);
+	ADC_setInterruptSOCTrigger(ADC0_BASE, ADC_SOC_NUMBER0, ADC_INT_SOC_TRIGGER_NONE);
+	//
+	// Start of Conversion 1 Configuration
+	//
+	//
+	// Configures a start-of-conversion (SOC) in the ADC and its interrupt SOC trigger.
+	// 	  	SOC number		: 1
+	//	  	Trigger			: ADC_TRIGGER_EPWM1_SOCA
+	//	  	Channel			: ADC_CH_ADCIN2
+	//	 	Sample Window	: 15 SYSCLK cycles
+	//		Interrupt Trigger: ADC_INT_SOC_TRIGGER_NONE
+	//
+	ADC_setupSOC(ADC0_BASE, ADC_SOC_NUMBER1, ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN2, 15U);
+	ADC_setInterruptSOCTrigger(ADC0_BASE, ADC_SOC_NUMBER1, ADC_INT_SOC_TRIGGER_NONE);
+	//
+	// ADC Interrupt 1 Configuration
+	// 		Source	: ADC_SOC_NUMBER1
+	// 		Interrupt Source: enabled
+	//		Continuous Mode	: enabled
+	//
+	//
+	ADC_setInterruptSource(ADC0_BASE, ADC_INT_NUMBER1, ADC_SOC_NUMBER1);
+	ADC_clearInterruptStatus(ADC0_BASE, ADC_INT_NUMBER1);
+	ADC_enableContinuousMode(ADC0_BASE, ADC_INT_NUMBER1);
+	ADC_enableInterrupt(ADC0_BASE, ADC_INT_NUMBER1);
+}
+
+
+//*****************************************************************************
+//
 // CLA Configurations
 //
 //*****************************************************************************
@@ -135,7 +216,7 @@ void myCLA0_init(){
     // CLA Task 1
     //
     CLA_mapTaskVector(myCLA0_BASE, CLA_MVECT_1, (uint16_t)&Cla1Task1);
-    CLA_setTriggerSource(CLA_TASK_1, CLA_TRIGGER_SOFTWARE);
+    CLA_setTriggerSource(CLA_TASK_1, CLA_TRIGGER_ADCA1);
 #pragma diag_warning=770
 	//
     // Enable the IACK instruction to start a task on CLA in software
@@ -179,6 +260,7 @@ void CLA_init()
 //*****************************************************************************
 void CPUTIMER_init(){
 	myCPUTIMER0_init();
+	myCPUTIMER1_init();
 }
 
 void myCPUTIMER0_init(){
@@ -190,6 +272,16 @@ void myCPUTIMER0_init(){
 
 	CPUTimer_reloadTimerCounter(myCPUTIMER0_BASE);
 	CPUTimer_startTimer(myCPUTIMER0_BASE);
+}
+void myCPUTIMER1_init(){
+	CPUTimer_setEmulationMode(myCPUTIMER1_BASE, CPUTIMER_EMULATIONMODE_STOPAFTERNEXTDECREMENT);
+	CPUTimer_setPreScaler(myCPUTIMER1_BASE, 0U);
+	CPUTimer_setPeriod(myCPUTIMER1_BASE, 9999U);
+	CPUTimer_disableInterrupt(myCPUTIMER1_BASE);
+	CPUTimer_stopTimer(myCPUTIMER1_BASE);
+
+	CPUTimer_reloadTimerCounter(myCPUTIMER1_BASE);
+	CPUTimer_startTimer(myCPUTIMER1_BASE);
 }
 
 //*****************************************************************************
@@ -291,6 +383,7 @@ void EPWM_init(){
     EPWM_disableDeadBandControlShadowLoadMode(EPWM_S12_BASE);	
     EPWM_enableADCTrigger(EPWM_S12_BASE, EPWM_SOC_A);	
     EPWM_setADCTriggerSource(EPWM_S12_BASE, EPWM_SOC_A, EPWM_SOC_TBCTR_PERIOD);	
+    EPWM_setADCTriggerEventPrescale(EPWM_S12_BASE, EPWM_SOC_A, 1);	
     EPWM_setClockPrescaler(EPWM_S34_BASE, EPWM_CLOCK_DIVIDER_1, EPWM_HSCLOCK_DIVIDER_1);	
     EPWM_setTimeBasePeriod(EPWM_S34_BASE, 5000);	
     EPWM_setupEPWMLinks(EPWM_S34_BASE, EPWM_LINK_WITH_EPWM_1, EPWM_LINK_TBPRD);	

@@ -40,5 +40,7 @@ __interrupt void Cla1Task1()
 
     EPWM_setCounterCompareValue(EPWM_S12_BASE, EPWM_COUNTER_COMPARE_A, (uint16_t)(i*5000));
     EPWM_setCounterCompareValue(EPWM_S34_BASE, EPWM_COUNTER_COMPARE_A, (uint16_t)(i*5000));
+    adc_1 = ADC_readResult(ADC0_RESULT_BASE, ADC0_SOC0);
+    adc_2 = ADC_readResult(ADC0_RESULT_BASE, ADC0_SOC1);
 
 }
