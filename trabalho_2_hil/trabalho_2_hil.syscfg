@@ -71,6 +71,7 @@ cla1.cpuint_CLA_TASK_6  = false;
 cla1.cpuint_CLA_TASK_7  = false;
 cla1.cpuint_CLA_TASK_8  = false;
 cla1.trigger_CLA_TASK_1 = "CLA_TRIGGER_ADCA1";
+cla1.cpuint_CLA_TASK_1  = false;
 
 cputimer1.$name                    = "myCPUTIMER0";
 cputimer1.timerPeriod              = 499;

@@ -19,9 +19,25 @@
 #define fs 20000.0f
 #define dTheta (float)(2*pi*f/fs)
 
+#define MAXDAC 4095
+#define OFFSETVT 350
+#define MAXVT (2*OFFSETVT)
+#define GANHODACVT (MAXDAC/MAXVT)
+#define OFFSETIL 150
+#define MAXIL (2*OFFSETIL)
+#define GANHODACIL (MAXDAC/MAXIL)
+#define GANHOADCVT (1/GANHODACVT)
+#define GANHOADCIL (1/GANHODACIL)
+
 
 __interrupt void Cla1Task1()
 {
+    adc_a0 = ADC_readResult(ADC0_RESULT_BASE, ADC0_SOC0);
+    adc_a2 = ADC_readResult(ADC0_RESULT_BASE, ADC0_SOC1);
+
+    vg = (float)((adc_a0 * GANHOADCVT) - OFFSETVT);
+    i = (float)((adc_a2 * GANHOADCIL) - OFFSETIL);
+
     sref = REF * CLAsin(theta);
     theta = ((theta+dTheta)<=2*pi) ? (theta+dTheta) : (2*pi - theta+dTheta);
 
@@ -38,9 +54,11 @@ __interrupt void Cla1Task1()
     yr[2] = yr[1];
     yr[1] = yr[0];
 
-    EPWM_setCounterCompareValue(EPWM_S12_BASE, EPWM_COUNTER_COMPARE_A, (uint16_t)(i*5000));
-    EPWM_setCounterCompareValue(EPWM_S34_BASE, EPWM_COUNTER_COMPARE_A, (uint16_t)(i*5000));
-    adc_1 = ADC_readResult(ADC0_RESULT_BASE, ADC0_SOC0);
-    adc_2 = ADC_readResult(ADC0_RESULT_BASE, ADC0_SOC1);
+    duty1 = 0.5 * (1+u[0]);
+    duty2 = 0.5 * (1-u[0]);
+
+    EPWM_setCounterCompareValue(EPWM_S12_BASE, EPWM_COUNTER_COMPARE_A, (uint16_t)(duty1*5000));
+    EPWM_setCounterCompareValue(EPWM_S34_BASE, EPWM_COUNTER_COMPARE_A, (uint16_t)(duty2*5000));
+    
 
 }

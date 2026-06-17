@@ -16,7 +16,9 @@ extern float vg;
 extern float REF;
 extern float theta;
 extern float sref;
-extern float adc_1;
-extern float adc_2;
+extern uint16_t adc_a0;
+extern uint16_t adc_a2;
+extern float duty1;
+extern float duty2;
 
 #endif /* SHARED_VARS_H_ */

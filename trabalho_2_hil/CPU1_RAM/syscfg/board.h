@@ -248,12 +248,6 @@ void myINPUTXBARINPUT3_init();
 //
 //*****************************************************************************
 
-// Interrupt Settings for INT_myCLA01
-// ISR need to be defined for the registered interrupts
-#define INT_myCLA01 INT_CLA1_1
-#define INT_myCLA01_INTERRUPT_ACK_GROUP INTERRUPT_ACK_GROUP11
-extern __interrupt void cla1Isr1(void);
-
 // Interrupt Settings for INT_myCPUTIMER0
 // ISR need to be defined for the registered interrupts
 #define INT_myCPUTIMER0 INT_TIMER0

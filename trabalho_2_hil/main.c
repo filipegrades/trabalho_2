@@ -34,9 +34,9 @@ float e[3]={0};
 float u[2]={0};
 #pragma DATA_SECTION(yr,"Cla1ToCpuMsgRAM");
 float yr[3]={0};
-#pragma DATA_SECTION(i,"CpuToCla1MsgRAM");
+#pragma DATA_SECTION(i,"Cla1ToCpuMsgRAM");
 float i;
-#pragma DATA_SECTION(vg,"CpuToCla1MsgRAM");
+#pragma DATA_SECTION(vg,"Cla1ToCpuMsgRAM");
 float vg;
 #pragma DATA_SECTION(REF,"CpuToCla1MsgRAM");
 float REF = 10.0f;
@@ -44,10 +44,14 @@ float REF = 10.0f;
 float theta = 0.0f;
 #pragma DATA_SECTION(sref,"Cla1ToCpuMsgRAM");
 float sref;
-#pragma DATA_SECTION(adc_1,"Cla1ToCpuMsgRAM");
-float adc_1;
-#pragma DATA_SECTION(adc_2,"Cla1ToCpuMsgRAM");
-float adc_2;
+#pragma DATA_SECTION(adc_a0,"Cla1ToCpuMsgRAM");
+uint16_t adc_a0;
+#pragma DATA_SECTION(adc_a2,"Cla1ToCpuMsgRAM");
+uint16_t adc_a2;
+#pragma DATA_SECTION(duty1,"Cla1ToCpuMsgRAM");
+float duty1;
+#pragma DATA_SECTION(duty2,"Cla1ToCpuMsgRAM");
+float duty2;
 
 // Variaveis do modelo
 float il[2] = {0};
@@ -59,8 +63,7 @@ float vt_dTheta = 2*pi*fg*dT;
 float vt_theta = 0.0;
 float vt_phi = 0.0;
 bool habilitaCalculo = false;
-float dutya, dutyb;
-int contadc = 0;
+
 
 float vt_buffer[TAMANHO_BUFFER];
 float il_buffer[TAMANHO_BUFFER];
@@ -109,13 +112,6 @@ __interrupt void INT_SCI0_RX_ISR(void)
     
     SCI_clearInterruptStatus(SCI0_BASE, SCI_INT_RXFF);
     Interrupt_clearACKGroup(INT_SCI0_RX_INTERRUPT_ACK_GROUP);
-}
-
-__interrupt void cla1Isr1()
-{
-    //protocolSendData(SCI0_BASE, &u[0],sizeof(float));
-    Interrupt_clearACKGroup(INT_myCLA01_INTERRUPT_ACK_GROUP);
-    
 }
 
 __interrupt void INT_myCPUTIMER0_ISR()

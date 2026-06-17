@@ -490,11 +490,6 @@ void myINPUTXBARINPUT3_init(){
 //*****************************************************************************
 void INTERRUPT_init(){
 	
-	// Interrupt Settings for INT_myCLA01
-	// ISR need to be defined for the registered interrupts
-	Interrupt_register(INT_myCLA01, &cla1Isr1);
-	Interrupt_enable(INT_myCLA01);
-	
 	// Interrupt Settings for INT_myCPUTIMER0
 	// ISR need to be defined for the registered interrupts
 	Interrupt_register(INT_myCPUTIMER0, &INT_myCPUTIMER0_ISR);
