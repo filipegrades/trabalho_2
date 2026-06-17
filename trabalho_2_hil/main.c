@@ -41,7 +41,7 @@ float vg;
 #pragma DATA_SECTION(REF,"CpuToCla1MsgRAM");
 float REF = 10.0f;
 #pragma DATA_SECTION(theta,"Cla1ToCpuMsgRAM");
-float32_t theta = 0.0f;
+float theta = 0.0f;
 #pragma DATA_SECTION(sref,"Cla1ToCpuMsgRAM");
 float sref;
 
@@ -90,8 +90,6 @@ void main(void)
             vt_buffer[cont_buffer] = vt[0];
             il_buffer[cont_buffer] = il[0];
             cont_buffer = (cont_buffer+1)%TAMANHO_BUFFER;
-            EPWM_setCounterCompareValue(EPWM_S12_BASE, EPWM_COUNTER_COMPARE_A, (uint16_t)(dutya*5000));
-            EPWM_setCounterCompareValue(EPWM_S34_BASE, EPWM_COUNTER_COMPARE_A, (uint16_t)(dutya*5000));
         }
     }
 }
@@ -110,13 +108,14 @@ __interrupt void INT_SCI0_RX_ISR(void)
 
 __interrupt void cla1Isr1()
 {
-    protocolSendData(SCI0_BASE, &u[0],sizeof(float));
+    //protocolSendData(SCI0_BASE, &u[0],sizeof(float));
     Interrupt_clearACKGroup(INT_myCLA01_INTERRUPT_ACK_GROUP);
     
 }
 
 __interrupt void INT_myCPUTIMER0_ISR()
 {
+    CLA_forceTasks(myCLA0_BASE,CLA_TASKFLAG_1);
     habilitaCalculo = true;
     DAC_setShadowValue(myDAC0_BASE, (uint16_t)(GANHODACIL*(il[0]+OFFSETIL)));
     DAC_setShadowValue(myDAC1_BASE, (uint16_t)(GANHODACVT*(vt[0]+OFFSETVT)));

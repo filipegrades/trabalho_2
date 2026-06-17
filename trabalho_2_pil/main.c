@@ -19,7 +19,7 @@ float vg;
 #pragma DATA_SECTION(REF,"CpuToCla1MsgRAM");
 float REF = 10.0f;
 #pragma DATA_SECTION(theta,"Cla1ToCpuMsgRAM");
-float32_t theta = 0.0f;
+float theta = 0.0f;
 #pragma DATA_SECTION(sref,"Cla1ToCpuMsgRAM");
 float sref;
 

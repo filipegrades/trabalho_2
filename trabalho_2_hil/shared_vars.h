@@ -14,7 +14,7 @@ extern float yr[3];
 extern float i;
 extern float vg;
 extern float REF;
-extern float32_t theta;
+extern float theta;
 extern float sref;
 
 #endif /* SHARED_VARS_H_ */

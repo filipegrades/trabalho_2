@@ -37,4 +37,8 @@ __interrupt void Cla1Task1()
     e[1] = e[0];
     yr[2] = yr[1];
     yr[1] = yr[0];
+
+    EPWM_setCounterCompareValue(EPWM_S12_BASE, EPWM_COUNTER_COMPARE_A, (uint16_t)(i*5000));
+    EPWM_setCounterCompareValue(EPWM_S34_BASE, EPWM_COUNTER_COMPARE_A, (uint16_t)(i*5000));
+
 }
