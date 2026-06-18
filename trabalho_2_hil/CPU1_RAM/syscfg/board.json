@@ -19,10 +19,6 @@
         {
             "interruptName": "INT_S4_XINT",
             "interruptHandler": "INT_S4_XINT_ISR"
-        },
-        {
-            "interruptName": "INT_SCI0_RX",
-            "interruptHandler": "INT_SCI0_RX_ISR"
         }
     ]
 }

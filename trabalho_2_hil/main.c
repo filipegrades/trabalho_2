@@ -20,10 +20,10 @@
 #define km3 (dT/(4*L+2*dT*R))
 #define TAMANHO_BUFFER 100
 #define MAXDAC 4095
-#define OFFSETVT 350
+#define OFFSETVT 400
 #define MAXVT (2*OFFSETVT)
 #define GANHODACVT (MAXDAC/MAXVT)
-#define OFFSETIL 150
+#define OFFSETIL 200
 #define MAXIL (2*OFFSETIL)
 #define GANHODACIL (MAXDAC/MAXIL)
 
@@ -45,9 +45,9 @@ float theta = 0.0f;
 #pragma DATA_SECTION(sref,"Cla1ToCpuMsgRAM");
 float sref;
 #pragma DATA_SECTION(adc_a0,"Cla1ToCpuMsgRAM");
-uint16_t adc_a0;
+float adc_a0;
 #pragma DATA_SECTION(adc_a2,"Cla1ToCpuMsgRAM");
-uint16_t adc_a2;
+float adc_a2;
 #pragma DATA_SECTION(duty1,"Cla1ToCpuMsgRAM");
 float duty1;
 #pragma DATA_SECTION(duty2,"Cla1ToCpuMsgRAM");
@@ -102,17 +102,6 @@ void main(void)
     }
 }
 
-__interrupt void INT_SCI0_RX_ISR(void)
-{
-    //protocolReceiveData(SCI0_BASE,&REF,sizeof(float));
-    protocolReceiveData(SCI0_BASE,&i,sizeof(float));
-    protocolReceiveData(SCI0_BASE,&vg,sizeof(float));
-
-    CLA_forceTasks(myCLA0_BASE,CLA_TASKFLAG_1);
-    
-    SCI_clearInterruptStatus(SCI0_BASE, SCI_INT_RXFF);
-    Interrupt_clearACKGroup(INT_SCI0_RX_INTERRUPT_ACK_GROUP);
-}
 
 __interrupt void INT_myCPUTIMER0_ISR()
 {

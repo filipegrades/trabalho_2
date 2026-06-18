@@ -16,8 +16,8 @@ extern float vg;
 extern float REF;
 extern float theta;
 extern float sref;
-extern uint16_t adc_a0;
-extern uint16_t adc_a2;
+extern float adc_a0;
+extern float adc_a2;
 extern float duty1;
 extern float duty2;
 

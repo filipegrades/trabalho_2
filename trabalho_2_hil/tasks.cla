@@ -19,15 +19,15 @@
 #define fs 20000.0f
 #define dTheta (float)(2*pi*f/fs)
 
-#define MAXDAC 4095
-#define OFFSETVT 350
-#define MAXVT (2*OFFSETVT)
+#define MAXDAC 4095.0f
+#define OFFSETVT 400.0f
+#define MAXVT (2.0f*OFFSETVT)
 #define GANHODACVT (MAXDAC/MAXVT)
-#define OFFSETIL 150
-#define MAXIL (2*OFFSETIL)
+#define OFFSETIL 200.0f
+#define MAXIL (2.0f*OFFSETIL)
 #define GANHODACIL (MAXDAC/MAXIL)
-#define GANHOADCVT (1/GANHODACVT)
-#define GANHOADCIL (1/GANHODACIL)
+#define GANHOADCVT (1.0f/GANHODACVT)
+#define GANHOADCIL (1.0f/GANHODACIL)
 
 
 __interrupt void Cla1Task1()
@@ -35,8 +35,9 @@ __interrupt void Cla1Task1()
     adc_a0 = ADC_readResult(ADC0_RESULT_BASE, ADC0_SOC0);
     adc_a2 = ADC_readResult(ADC0_RESULT_BASE, ADC0_SOC1);
 
-    vg = (float)((adc_a0 * GANHOADCVT) - OFFSETVT);
-    i = (float)((adc_a2 * GANHOADCIL) - OFFSETIL);
+    vg = (adc_a0 * GANHOADCVT - OFFSETVT);
+    i = (adc_a2 * GANHOADCIL - OFFSETIL);
+
 
     sref = REF * CLAsin(theta);
     theta = ((theta+dTheta)<=2*pi) ? (theta+dTheta) : (2*pi - theta+dTheta);
