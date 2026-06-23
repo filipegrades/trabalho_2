@@ -17,34 +17,39 @@
 #define pi 3.141592f
 #define f 60.0f
 #define fs 20000.0f
-#define dTheta (float)(2*pi*f/fs)
+#define dTheta (float)(2.0f*pi*f/fs)
 
 #define MAXDAC 4095.0f
-#define OFFSETVT 400.0f
-#define MAXVT (2.0f*OFFSETVT)
-#define GANHODACVT (MAXDAC/MAXVT)
-#define OFFSETIL 200.0f
-#define MAXIL (2.0f*OFFSETIL)
-#define GANHODACIL (MAXDAC/MAXIL)
+#define OFFSET 2047.0f
+#define MAXVT 400.0f
+#define GANHODACVT (MAXDAC/(2.0f*MAXVT))
+#define MAXIL 20.0f
+#define GANHODACIL (MAXDAC/(2.0f*MAXIL))
 #define GANHOADCVT (1.0f/GANHODACVT)
 #define GANHOADCIL (1.0f/GANHODACIL)
 
 
 __interrupt void Cla1Task1()
 {
-    adc_a0 = ADC_readResult(ADC0_RESULT_BASE, ADC0_SOC0);
-    adc_a2 = ADC_readResult(ADC0_RESULT_BASE, ADC0_SOC1);
+    adc_il = ADC_readResult(ADC0_RESULT_BASE, ADC0_SOC0);
+    adc_vg = ADC_readResult(ADC1_RESULT_BASE, ADC0_SOC0);
 
-    vg = (adc_a0 * GANHOADCVT - OFFSETVT);
-    i = (adc_a2 * GANHOADCIL - OFFSETIL);
+    vg = (adc_vg - OFFSET) * GANHOADCVT;
+    i = (adc_il - OFFSET) * GANHOADCIL;
 
 
     sref = REF * CLAsin(theta);
-    theta = ((theta+dTheta)<=2*pi) ? (theta+dTheta) : (2*pi - theta+dTheta);
+    // theta = ((theta+dTheta)<=2*pi) ? (theta+dTheta) : (2*pi - theta+dTheta);
+    theta = theta + dTheta;
+    if(theta >= (2.0f * pi)) 
+    {
+        theta = theta - (2.0f * pi);
+    }
 
     e[0] = sref - i;
     yr[0] = k1*e[0] - k1*e[2] + k2*yr[1] - yr[2];
     u[0] = (kp*e[0] + ki*yr[0] + vg)*invvdc;
+    // u[0] = sref;
     
     u[0] = (u[0] > UL) ? UL : u[0];
     u[0] = (u[0] < LL) ? LL : u[0];
@@ -57,6 +62,12 @@ __interrupt void Cla1Task1()
 
     duty1 = 0.5 * (1+u[0]);
     duty2 = 0.5 * (1-u[0]);
+
+    // duty1 = (duty1 > UL) ? UL : duty1;
+    // duty1 = (duty1 < LL) ? LL : duty1;
+
+    // duty2 = (duty2 > UL) ? UL : duty2;
+    // duty2 = (duty2 < LL) ? LL : duty2;
 
     EPWM_setCounterCompareValue(EPWM_S12_BASE, EPWM_COUNTER_COMPARE_A, (uint16_t)(duty1*5000));
     EPWM_setCounterCompareValue(EPWM_S34_BASE, EPWM_COUNTER_COMPARE_A, (uint16_t)(duty2*5000));

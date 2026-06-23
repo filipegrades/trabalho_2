@@ -3,22 +3,6 @@
         {
             "interruptName": "INT_myCPUTIMER0",
             "interruptHandler": "INT_myCPUTIMER0_ISR"
-        },
-        {
-            "interruptName": "INT_S1_XINT",
-            "interruptHandler": "INT_S1_XINT_ISR"
-        },
-        {
-            "interruptName": "INT_S2_XINT",
-            "interruptHandler": "INT_S2_XINT_ISR"
-        },
-        {
-            "interruptName": "INT_S3_XINT",
-            "interruptHandler": "INT_S3_XINT_ISR"
-        },
-        {
-            "interruptName": "INT_S4_XINT",
-            "interruptHandler": "INT_S4_XINT_ISR"
         }
     ]
 }

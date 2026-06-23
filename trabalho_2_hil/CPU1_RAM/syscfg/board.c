@@ -57,7 +57,6 @@ void Board_init()
 	DAC_init();
 	EPWM_init();
 	GPIO_init();
-	XINT_init();
 	INTERRUPT_init();
 
 	EDIS;
@@ -114,6 +113,7 @@ void PinMux_init()
 //*****************************************************************************
 void ADC_init(){
 	ADC0_init();
+	ADC1_init();
 }
 
 void ADC0_init(){
@@ -154,36 +154,69 @@ void ADC0_init(){
 	// Configures a start-of-conversion (SOC) in the ADC and its interrupt SOC trigger.
 	// 	  	SOC number		: 0
 	//	  	Trigger			: ADC_TRIGGER_EPWM1_SOCA
-	//	  	Channel			: ADC_CH_ADCIN0
+	//	  	Channel			: ADC_CH_ADCIN5
 	//	 	Sample Window	: 15 SYSCLK cycles
 	//		Interrupt Trigger: ADC_INT_SOC_TRIGGER_NONE
 	//
-	ADC_setupSOC(ADC0_BASE, ADC_SOC_NUMBER0, ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN0, 15U);
+	ADC_setupSOC(ADC0_BASE, ADC_SOC_NUMBER0, ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN5, 15U);
 	ADC_setInterruptSOCTrigger(ADC0_BASE, ADC_SOC_NUMBER0, ADC_INT_SOC_TRIGGER_NONE);
 	//
-	// Start of Conversion 1 Configuration
-	//
-	//
-	// Configures a start-of-conversion (SOC) in the ADC and its interrupt SOC trigger.
-	// 	  	SOC number		: 1
-	//	  	Trigger			: ADC_TRIGGER_EPWM1_SOCA
-	//	  	Channel			: ADC_CH_ADCIN2
-	//	 	Sample Window	: 15 SYSCLK cycles
-	//		Interrupt Trigger: ADC_INT_SOC_TRIGGER_NONE
-	//
-	ADC_setupSOC(ADC0_BASE, ADC_SOC_NUMBER1, ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN2, 15U);
-	ADC_setInterruptSOCTrigger(ADC0_BASE, ADC_SOC_NUMBER1, ADC_INT_SOC_TRIGGER_NONE);
-	//
 	// ADC Interrupt 1 Configuration
-	// 		Source	: ADC_SOC_NUMBER1
+	// 		Source	: ADC_SOC_NUMBER0
 	// 		Interrupt Source: enabled
 	//		Continuous Mode	: enabled
 	//
 	//
-	ADC_setInterruptSource(ADC0_BASE, ADC_INT_NUMBER1, ADC_SOC_NUMBER1);
+	ADC_setInterruptSource(ADC0_BASE, ADC_INT_NUMBER1, ADC_SOC_NUMBER0);
 	ADC_clearInterruptStatus(ADC0_BASE, ADC_INT_NUMBER1);
 	ADC_enableContinuousMode(ADC0_BASE, ADC_INT_NUMBER1);
 	ADC_enableInterrupt(ADC0_BASE, ADC_INT_NUMBER1);
+}
+
+void ADC1_init(){
+	//
+	// Configures the analog-to-digital converter module prescaler.
+	//
+	ADC_setPrescaler(ADC1_BASE, ADC_CLK_DIV_4_0);
+	//
+	// Configures the analog-to-digital converter resolution and signal mode.
+	//
+	ADC_setMode(ADC1_BASE, ADC_RESOLUTION_12BIT, ADC_MODE_SINGLE_ENDED);
+	//
+	// Sets the timing of the end-of-conversion pulse
+	//
+	ADC_setInterruptPulseMode(ADC1_BASE, ADC_PULSE_END_OF_ACQ_WIN);
+	//
+	// Powers up the analog-to-digital converter core.
+	//
+	ADC_enableConverter(ADC1_BASE);
+	//
+	// Delay for 1ms to allow ADC time to power up
+	//
+	DEVICE_DELAY_US(500);
+	//
+	// SOC Configuration: Setup ADC EPWM channel and trigger settings
+	//
+	// Disables SOC burst mode.
+	//
+	ADC_disableBurstMode(ADC1_BASE);
+	//
+	// Sets the priority mode of the SOCs.
+	//
+	ADC_setSOCPriority(ADC1_BASE, ADC_PRI_ALL_ROUND_ROBIN);
+	//
+	// Start of Conversion 0 Configuration
+	//
+	//
+	// Configures a start-of-conversion (SOC) in the ADC and its interrupt SOC trigger.
+	// 	  	SOC number		: 0
+	//	  	Trigger			: ADC_TRIGGER_EPWM1_SOCA
+	//	  	Channel			: ADC_CH_ADCIN3
+	//	 	Sample Window	: 15 SYSCLK cycles
+	//		Interrupt Trigger: ADC_INT_SOC_TRIGGER_NONE
+	//
+	ADC_setupSOC(ADC1_BASE, ADC_SOC_NUMBER0, ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN3, 15U);
+	ADC_setInterruptSOCTrigger(ADC1_BASE, ADC_SOC_NUMBER0, ADC_INT_SOC_TRIGGER_NONE);
 }
 
 
@@ -253,7 +286,7 @@ void CPUTIMER_init(){
 void myCPUTIMER0_init(){
 	CPUTimer_setEmulationMode(myCPUTIMER0_BASE, CPUTIMER_EMULATIONMODE_STOPAFTERNEXTDECREMENT);
 	CPUTimer_setPreScaler(myCPUTIMER0_BASE, 0U);
-	CPUTimer_setPeriod(myCPUTIMER0_BASE, 499U);
+	CPUTimer_setPeriod(myCPUTIMER0_BASE, 999U);
 	CPUTimer_enableInterrupt(myCPUTIMER0_BASE);
 	CPUTimer_stopTimer(myCPUTIMER0_BASE);
 
@@ -331,7 +364,7 @@ void EPWM_init(){
     EPWM_setCountModeAfterSync(EPWM_S12_BASE, EPWM_COUNT_MODE_UP_AFTER_SYNC);	
     EPWM_disablePhaseShiftLoad(EPWM_S12_BASE);	
     EPWM_setPhaseShift(EPWM_S12_BASE, 0);	
-    EPWM_setSyncOutPulseMode(EPWM_S12_BASE, EPWM_SYNC_OUT_PULSE_ON_EPWMxSYNCIN);	
+    EPWM_setSyncOutPulseMode(EPWM_S12_BASE, EPWM_SYNC_OUT_PULSE_ON_COUNTER_ZERO);	
     EPWM_setCounterCompareValue(EPWM_S12_BASE, EPWM_COUNTER_COMPARE_A, 0);	
     EPWM_setCounterCompareShadowLoadMode(EPWM_S12_BASE, EPWM_COUNTER_COMPARE_A, EPWM_COMP_LOAD_ON_CNTR_ZERO);	
     EPWM_setCounterCompareValue(EPWM_S12_BASE, EPWM_COUNTER_COMPARE_B, 0);	
@@ -471,26 +504,6 @@ void INTERRUPT_init(){
 	// ISR need to be defined for the registered interrupts
 	Interrupt_register(INT_myCPUTIMER0, &INT_myCPUTIMER0_ISR);
 	Interrupt_enable(INT_myCPUTIMER0);
-	
-	// Interrupt Settings for INT_S1_XINT
-	// ISR need to be defined for the registered interrupts
-	Interrupt_register(INT_S1_XINT, &INT_S1_XINT_ISR);
-	Interrupt_enable(INT_S1_XINT);
-	
-	// Interrupt Settings for INT_S2_XINT
-	// ISR need to be defined for the registered interrupts
-	Interrupt_register(INT_S2_XINT, &INT_S2_XINT_ISR);
-	Interrupt_enable(INT_S2_XINT);
-	
-	// Interrupt Settings for INT_S3_XINT
-	// ISR need to be defined for the registered interrupts
-	Interrupt_register(INT_S3_XINT, &INT_S3_XINT_ISR);
-	Interrupt_enable(INT_S3_XINT);
-	
-	// Interrupt Settings for INT_S4_XINT
-	// ISR need to be defined for the registered interrupts
-	Interrupt_register(INT_S4_XINT, &INT_S4_XINT_ISR);
-	Interrupt_enable(INT_S4_XINT);
 }
 //*****************************************************************************
 //
@@ -600,36 +613,3 @@ void SYNC_init(){
 	//
 	SysCtl_enableExtADCSOCSource(0);
 }
-//*****************************************************************************
-//
-// XINT Configurations
-//
-//*****************************************************************************
-void XINT_init(){
-	S1_XINT_init();
-	S2_XINT_init();
-	S3_XINT_init();
-	S4_XINT_init();
-}
-
-void S1_XINT_init(){
-	GPIO_setInterruptType(S1_XINT, GPIO_INT_TYPE_BOTH_EDGES);
-	GPIO_setInterruptPin(S1, S1_XINT);
-	GPIO_enableInterrupt(S1_XINT);
-}
-void S2_XINT_init(){
-	GPIO_setInterruptType(S2_XINT, GPIO_INT_TYPE_BOTH_EDGES);
-	GPIO_setInterruptPin(S2, S2_XINT);
-	GPIO_enableInterrupt(S2_XINT);
-}
-void S3_XINT_init(){
-	GPIO_setInterruptType(S3_XINT, GPIO_INT_TYPE_BOTH_EDGES);
-	GPIO_setInterruptPin(S3, S3_XINT);
-	GPIO_enableInterrupt(S3_XINT);
-}
-void S4_XINT_init(){
-	GPIO_setInterruptType(S4_XINT, GPIO_INT_TYPE_BOTH_EDGES);
-	GPIO_setInterruptPin(S4, S4_XINT);
-	GPIO_enableInterrupt(S4_XINT);
-}
-

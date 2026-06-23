@@ -16,8 +16,8 @@ extern float vg;
 extern float REF;
 extern float theta;
 extern float sref;
-extern float adc_a0;
-extern float adc_a2;
+extern float adc_il;
+extern float adc_vg;
 extern float duty1;
 extern float duty2;
 
