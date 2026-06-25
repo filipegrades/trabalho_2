@@ -117,7 +117,7 @@ extern "C"
 #define ADC0_FORCE_SOC0 ADC_FORCE_SOC0
 #define ADC0_SAMPLE_WINDOW_SOC0 75
 #define ADC0_TRIGGER_SOURCE_SOC0 ADC_TRIGGER_EPWM1_SOCA
-#define ADC0_CHANNEL_SOC0 ADC_CH_ADCIN5
+#define ADC0_CHANNEL_SOC0 ADC_CH_ADCIN4
 void ADC0_init();
 
 #define ADC1_BASE ADCB_BASE
@@ -240,6 +240,30 @@ void myINPUTXBARINPUT3_init();
 #define INT_myCPUTIMER0_INTERRUPT_ACK_GROUP INTERRUPT_ACK_GROUP1
 extern __interrupt void INT_myCPUTIMER0_ISR(void);
 
+// Interrupt Settings for INT_S1_XINT
+// ISR need to be defined for the registered interrupts
+#define INT_S1_XINT INT_XINT1
+#define INT_S1_XINT_INTERRUPT_ACK_GROUP INTERRUPT_ACK_GROUP1
+extern __interrupt void INT_S1_XINT_ISR(void);
+
+// Interrupt Settings for INT_S2_XINT
+// ISR need to be defined for the registered interrupts
+#define INT_S2_XINT INT_XINT2
+#define INT_S2_XINT_INTERRUPT_ACK_GROUP INTERRUPT_ACK_GROUP1
+extern __interrupt void INT_S2_XINT_ISR(void);
+
+// Interrupt Settings for INT_S3_XINT
+// ISR need to be defined for the registered interrupts
+#define INT_S3_XINT INT_XINT3
+#define INT_S3_XINT_INTERRUPT_ACK_GROUP INTERRUPT_ACK_GROUP12
+extern __interrupt void INT_S3_XINT_ISR(void);
+
+// Interrupt Settings for INT_S4_XINT
+// ISR need to be defined for the registered interrupts
+#define INT_S4_XINT INT_XINT4
+#define INT_S4_XINT_INTERRUPT_ACK_GROUP INTERRUPT_ACK_GROUP12
+extern __interrupt void INT_S4_XINT_ISR(void);
+
 //*****************************************************************************
 //
 // MEMCFG Configurations
@@ -251,6 +275,24 @@ extern __interrupt void INT_myCPUTIMER0_ISR(void);
 // SYNC Scheme Configurations
 //
 //*****************************************************************************
+
+//*****************************************************************************
+//
+// XINT Configurations
+//
+//*****************************************************************************
+#define S1_XINT GPIO_INT_XINT1
+#define S1_XINT_TYPE GPIO_INT_TYPE_BOTH_EDGES
+void S1_XINT_init();
+#define S2_XINT GPIO_INT_XINT2
+#define S2_XINT_TYPE GPIO_INT_TYPE_BOTH_EDGES
+void S2_XINT_init();
+#define S3_XINT GPIO_INT_XINT3
+#define S3_XINT_TYPE GPIO_INT_TYPE_BOTH_EDGES
+void S3_XINT_init();
+#define S4_XINT GPIO_INT_XINT4
+#define S4_XINT_TYPE GPIO_INT_TYPE_BOTH_EDGES
+void S4_XINT_init();
 
 //*****************************************************************************
 //
@@ -268,6 +310,7 @@ void	INPUTXBAR_init();
 void	INTERRUPT_init();
 void	MEMCFG_init();
 void	SYNC_init();
+void	XINT_init();
 void	PinMux_init();
 
 //*****************************************************************************

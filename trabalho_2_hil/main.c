@@ -40,7 +40,7 @@ float i;
 #pragma DATA_SECTION(vg,"Cla1ToCpuMsgRAM");
 float vg;
 #pragma DATA_SECTION(REF,"CpuToCla1MsgRAM");
-float REF = 12.0f;
+float REF = 0.0f;
 #pragma DATA_SECTION(theta,"Cla1ToCpuMsgRAM");
 float theta = 0.0f;
 #pragma DATA_SECTION(sref,"Cla1ToCpuMsgRAM");
@@ -72,6 +72,8 @@ float vt_buffer[TAMANHO_BUFFER];
 float il_buffer[TAMANHO_BUFFER];
 unsigned int cont_buffer = 0;
 
+bool hpwm = false;
+
 // float vg_buffer[TAMANHO_BUFFER];
 // float i_buffer[TAMANHO_BUFFER];
 // unsigned int cont_buffer2 = 0;
@@ -86,19 +88,34 @@ void main(void)
     Interrupt_initVectorTable();
     Board_init();
 
+    // 1. Inicializa os DACs com o referencial de zero (0 Amperes)
+    DAC_setShadowValue(myDAC0_BASE, 2047);
+    DAC_setShadowValue(myDAC1_BASE, 2047);
+
+    // 2. Dá um pequeno tempo para a tensão subir no cabo físico
+    DEVICE_DELAY_US(100);
+
+    // 3. Limpa a falha falsa gerada durante o boot
+    EPWM_clearTripZoneFlag(EPWM_S12_BASE, EPWM_TZ_INTERRUPT_OST);
+    EPWM_clearTripZoneFlag(EPWM_S34_BASE, EPWM_TZ_INTERRUPT_OST);
+
     // Habilita interrupcoes globais e de tempo real
     EINT;
     ERTM;
+
+
+    
+
 
     while (1)
     {
         if(habilitaCalculo)
         {
             habilitaCalculo = false;
-            Si[0] = GPIO_readPin(S1);
-            Si[1] = GPIO_readPin(S2);
-            Si[2] = GPIO_readPin(S3);
-            Si[3] = GPIO_readPin(S4);
+            // Si[0] = GPIO_readPin(S1);
+            // Si[1] = GPIO_readPin(S2);
+            // Si[2] = GPIO_readPin(S3);
+            // Si[3] = GPIO_readPin(S4);
             vt[0] = vt_amplitude*__sin(vt_theta+vt_phi);
             // vt[0] = 0.0;
             // vt_theta = ((vt_theta+vt_dTheta)<=2*pi) ? (vt_theta+vt_dTheta) : (2*pi - vt_theta+vt_dTheta);
@@ -125,6 +142,13 @@ void main(void)
             DAC_setShadowValue(myDAC0_BASE, (uint16_t)dac_il);
             DAC_setShadowValue(myDAC1_BASE, (uint16_t)dac_vt);
         }
+
+        if (hpwm)
+        {
+            EPWM_clearTripZoneFlag(EPWM_S12_BASE, EPWM_TZ_INTERRUPT_OST);
+            EPWM_clearTripZoneFlag(EPWM_S34_BASE, EPWM_TZ_INTERRUPT_OST);
+            hpwm = false;
+        }
     }
 }
 
@@ -137,29 +161,29 @@ __interrupt void INT_myCPUTIMER0_ISR()
     Interrupt_clearACKGroup(INT_myCPUTIMER0_INTERRUPT_ACK_GROUP);
 }
 
-// __interrupt void INT_S1_XINT_ISR()
-// {
-//     Si[0] = GPIO_readPin(S1);
-//     Interrupt_clearACKGroup(INT_S1_XINT_INTERRUPT_ACK_GROUP);
-// }
+__interrupt void INT_S1_XINT_ISR()
+{
+    Si[0] = GPIO_readPin(S1);
+    Interrupt_clearACKGroup(INT_S1_XINT_INTERRUPT_ACK_GROUP);
+}
 
-// __interrupt void INT_S2_XINT_ISR()
-// {
-//     Si[1] = GPIO_readPin(S2);
-//     Interrupt_clearACKGroup(INT_S2_XINT_INTERRUPT_ACK_GROUP);
-// }
+__interrupt void INT_S2_XINT_ISR()
+{
+    Si[1] = GPIO_readPin(S2);
+    Interrupt_clearACKGroup(INT_S2_XINT_INTERRUPT_ACK_GROUP);
+}
 
-// __interrupt void INT_S3_XINT_ISR()
-// {
-//     Si[2] = GPIO_readPin(S3);
-//     Interrupt_clearACKGroup(INT_S3_XINT_INTERRUPT_ACK_GROUP);
-// }
+__interrupt void INT_S3_XINT_ISR()
+{
+    Si[2] = GPIO_readPin(S3);
+    Interrupt_clearACKGroup(INT_S3_XINT_INTERRUPT_ACK_GROUP);
+}
 
-// __interrupt void INT_S4_XINT_ISR()
-// {
-//     Si[3] = GPIO_readPin(S4);
-//     Interrupt_clearACKGroup(INT_S4_XINT_INTERRUPT_ACK_GROUP);
-// }
+__interrupt void INT_S4_XINT_ISR()
+{
+    Si[3] = GPIO_readPin(S4);
+    Interrupt_clearACKGroup(INT_S4_XINT_INTERRUPT_ACK_GROUP);
+}
 
 // __interrupt void INT_ADC1_2_ISR()
 // {

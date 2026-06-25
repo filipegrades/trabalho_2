@@ -57,6 +57,7 @@ void Board_init()
 	DAC_init();
 	EPWM_init();
 	GPIO_init();
+	XINT_init();
 	INTERRUPT_init();
 
 	EDIS;
@@ -154,11 +155,11 @@ void ADC0_init(){
 	// Configures a start-of-conversion (SOC) in the ADC and its interrupt SOC trigger.
 	// 	  	SOC number		: 0
 	//	  	Trigger			: ADC_TRIGGER_EPWM1_SOCA
-	//	  	Channel			: ADC_CH_ADCIN5
+	//	  	Channel			: ADC_CH_ADCIN4
 	//	 	Sample Window	: 15 SYSCLK cycles
 	//		Interrupt Trigger: ADC_INT_SOC_TRIGGER_NONE
 	//
-	ADC_setupSOC(ADC0_BASE, ADC_SOC_NUMBER0, ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN5, 15U);
+	ADC_setupSOC(ADC0_BASE, ADC_SOC_NUMBER0, ADC_TRIGGER_EPWM1_SOCA, ADC_CH_ADCIN4, 15U);
 	ADC_setInterruptSOCTrigger(ADC0_BASE, ADC_SOC_NUMBER0, ADC_INT_SOC_TRIGGER_NONE);
 	//
 	// ADC Interrupt 1 Configuration
@@ -371,6 +372,7 @@ void EPWM_init(){
     EPWM_setCounterCompareShadowLoadMode(EPWM_S12_BASE, EPWM_COUNTER_COMPARE_B, EPWM_COMP_LOAD_ON_CNTR_ZERO);	
     EPWM_disableActionQualifierShadowLoadMode(EPWM_S12_BASE, EPWM_ACTION_QUALIFIER_A);	
     EPWM_setActionQualifierShadowLoadMode(EPWM_S12_BASE, EPWM_ACTION_QUALIFIER_A, EPWM_AQ_LOAD_ON_CNTR_ZERO);	
+    EPWM_setActionQualifierSWAction(EPWM_S12_BASE, EPWM_AQ_OUTPUT_A, EPWM_AQ_OUTPUT_LOW);	
     EPWM_setActionQualifierAction(EPWM_S12_BASE, EPWM_AQ_OUTPUT_A, EPWM_AQ_OUTPUT_NO_CHANGE, EPWM_AQ_OUTPUT_ON_TIMEBASE_ZERO);	
     EPWM_setActionQualifierAction(EPWM_S12_BASE, EPWM_AQ_OUTPUT_A, EPWM_AQ_OUTPUT_NO_CHANGE, EPWM_AQ_OUTPUT_ON_TIMEBASE_PERIOD);	
     EPWM_setActionQualifierAction(EPWM_S12_BASE, EPWM_AQ_OUTPUT_A, EPWM_AQ_OUTPUT_LOW, EPWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPA);	
@@ -379,6 +381,7 @@ void EPWM_init(){
     EPWM_setActionQualifierAction(EPWM_S12_BASE, EPWM_AQ_OUTPUT_A, EPWM_AQ_OUTPUT_NO_CHANGE, EPWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPB);	
     EPWM_disableActionQualifierShadowLoadMode(EPWM_S12_BASE, EPWM_ACTION_QUALIFIER_B);	
     EPWM_setActionQualifierShadowLoadMode(EPWM_S12_BASE, EPWM_ACTION_QUALIFIER_B, EPWM_AQ_LOAD_ON_CNTR_ZERO);	
+    EPWM_setActionQualifierSWAction(EPWM_S12_BASE, EPWM_AQ_OUTPUT_B, EPWM_AQ_OUTPUT_LOW);	
     EPWM_setActionQualifierAction(EPWM_S12_BASE, EPWM_AQ_OUTPUT_B, EPWM_AQ_OUTPUT_NO_CHANGE, EPWM_AQ_OUTPUT_ON_TIMEBASE_ZERO);	
     EPWM_setActionQualifierAction(EPWM_S12_BASE, EPWM_AQ_OUTPUT_B, EPWM_AQ_OUTPUT_NO_CHANGE, EPWM_AQ_OUTPUT_ON_TIMEBASE_PERIOD);	
     EPWM_setActionQualifierAction(EPWM_S12_BASE, EPWM_AQ_OUTPUT_B, EPWM_AQ_OUTPUT_HIGH, EPWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPA);	
@@ -391,6 +394,8 @@ void EPWM_init(){
     EPWM_disableFallingEdgeDelayCountShadowLoadMode(EPWM_S12_BASE);	
     EPWM_setDeadBandControlShadowLoadMode(EPWM_S12_BASE, EPWM_DB_LOAD_ON_CNTR_ZERO);	
     EPWM_disableDeadBandControlShadowLoadMode(EPWM_S12_BASE);	
+    EPWM_selectDigitalCompareTripInput(EPWM_S12_BASE, EPWM_DC_TRIP_TRIPIN4, EPWM_DC_TYPE_DCAH);	
+    EPWM_setTripZoneDigitalCompareEventCondition(EPWM_S12_BASE, EPWM_TZ_DC_OUTPUT_A1, EPWM_TZ_EVENT_DCXH_HIGH);	
     EPWM_enableADCTrigger(EPWM_S12_BASE, EPWM_SOC_A);	
     EPWM_setADCTriggerSource(EPWM_S12_BASE, EPWM_SOC_A, EPWM_SOC_TBCTR_PERIOD);	
     EPWM_setADCTriggerEventPrescale(EPWM_S12_BASE, EPWM_SOC_A, 1);	
@@ -409,6 +414,7 @@ void EPWM_init(){
     EPWM_setCounterCompareShadowLoadMode(EPWM_S34_BASE, EPWM_COUNTER_COMPARE_B, EPWM_COMP_LOAD_ON_CNTR_ZERO);	
     EPWM_disableActionQualifierShadowLoadMode(EPWM_S34_BASE, EPWM_ACTION_QUALIFIER_A);	
     EPWM_setActionQualifierShadowLoadMode(EPWM_S34_BASE, EPWM_ACTION_QUALIFIER_A, EPWM_AQ_LOAD_ON_CNTR_ZERO);	
+    EPWM_setActionQualifierSWAction(EPWM_S34_BASE, EPWM_AQ_OUTPUT_A, EPWM_AQ_OUTPUT_LOW);	
     EPWM_setActionQualifierAction(EPWM_S34_BASE, EPWM_AQ_OUTPUT_A, EPWM_AQ_OUTPUT_NO_CHANGE, EPWM_AQ_OUTPUT_ON_TIMEBASE_ZERO);	
     EPWM_setActionQualifierAction(EPWM_S34_BASE, EPWM_AQ_OUTPUT_A, EPWM_AQ_OUTPUT_NO_CHANGE, EPWM_AQ_OUTPUT_ON_TIMEBASE_PERIOD);	
     EPWM_setActionQualifierAction(EPWM_S34_BASE, EPWM_AQ_OUTPUT_A, EPWM_AQ_OUTPUT_LOW, EPWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPA);	
@@ -417,6 +423,7 @@ void EPWM_init(){
     EPWM_setActionQualifierAction(EPWM_S34_BASE, EPWM_AQ_OUTPUT_A, EPWM_AQ_OUTPUT_NO_CHANGE, EPWM_AQ_OUTPUT_ON_TIMEBASE_DOWN_CMPB);	
     EPWM_disableActionQualifierShadowLoadMode(EPWM_S34_BASE, EPWM_ACTION_QUALIFIER_B);	
     EPWM_setActionQualifierShadowLoadMode(EPWM_S34_BASE, EPWM_ACTION_QUALIFIER_B, EPWM_AQ_LOAD_ON_CNTR_ZERO);	
+    EPWM_setActionQualifierSWAction(EPWM_S34_BASE, EPWM_AQ_OUTPUT_B, EPWM_AQ_OUTPUT_LOW);	
     EPWM_setActionQualifierAction(EPWM_S34_BASE, EPWM_AQ_OUTPUT_B, EPWM_AQ_OUTPUT_NO_CHANGE, EPWM_AQ_OUTPUT_ON_TIMEBASE_ZERO);	
     EPWM_setActionQualifierAction(EPWM_S34_BASE, EPWM_AQ_OUTPUT_B, EPWM_AQ_OUTPUT_NO_CHANGE, EPWM_AQ_OUTPUT_ON_TIMEBASE_PERIOD);	
     EPWM_setActionQualifierAction(EPWM_S34_BASE, EPWM_AQ_OUTPUT_B, EPWM_AQ_OUTPUT_HIGH, EPWM_AQ_OUTPUT_ON_TIMEBASE_UP_CMPA);	
@@ -429,6 +436,8 @@ void EPWM_init(){
     EPWM_disableFallingEdgeDelayCountShadowLoadMode(EPWM_S34_BASE);	
     EPWM_setDeadBandControlShadowLoadMode(EPWM_S34_BASE, EPWM_DB_LOAD_ON_CNTR_ZERO);	
     EPWM_disableDeadBandControlShadowLoadMode(EPWM_S34_BASE);	
+    EPWM_selectDigitalCompareTripInput(EPWM_S34_BASE, EPWM_DC_TRIP_TRIPIN4, EPWM_DC_TYPE_DCAH);	
+    EPWM_setTripZoneDigitalCompareEventCondition(EPWM_S34_BASE, EPWM_TZ_DC_OUTPUT_A1, EPWM_TZ_EVENT_DCXH_HIGH);	
 }
 
 //*****************************************************************************
@@ -504,6 +513,26 @@ void INTERRUPT_init(){
 	// ISR need to be defined for the registered interrupts
 	Interrupt_register(INT_myCPUTIMER0, &INT_myCPUTIMER0_ISR);
 	Interrupt_enable(INT_myCPUTIMER0);
+	
+	// Interrupt Settings for INT_S1_XINT
+	// ISR need to be defined for the registered interrupts
+	Interrupt_register(INT_S1_XINT, &INT_S1_XINT_ISR);
+	Interrupt_enable(INT_S1_XINT);
+	
+	// Interrupt Settings for INT_S2_XINT
+	// ISR need to be defined for the registered interrupts
+	Interrupt_register(INT_S2_XINT, &INT_S2_XINT_ISR);
+	Interrupt_enable(INT_S2_XINT);
+	
+	// Interrupt Settings for INT_S3_XINT
+	// ISR need to be defined for the registered interrupts
+	Interrupt_register(INT_S3_XINT, &INT_S3_XINT_ISR);
+	Interrupt_enable(INT_S3_XINT);
+	
+	// Interrupt Settings for INT_S4_XINT
+	// ISR need to be defined for the registered interrupts
+	Interrupt_register(INT_S4_XINT, &INT_S4_XINT_ISR);
+	Interrupt_enable(INT_S4_XINT);
 }
 //*****************************************************************************
 //
@@ -613,3 +642,36 @@ void SYNC_init(){
 	//
 	SysCtl_enableExtADCSOCSource(0);
 }
+//*****************************************************************************
+//
+// XINT Configurations
+//
+//*****************************************************************************
+void XINT_init(){
+	S1_XINT_init();
+	S2_XINT_init();
+	S3_XINT_init();
+	S4_XINT_init();
+}
+
+void S1_XINT_init(){
+	GPIO_setInterruptType(S1_XINT, GPIO_INT_TYPE_BOTH_EDGES);
+	GPIO_setInterruptPin(S1, S1_XINT);
+	GPIO_enableInterrupt(S1_XINT);
+}
+void S2_XINT_init(){
+	GPIO_setInterruptType(S2_XINT, GPIO_INT_TYPE_BOTH_EDGES);
+	GPIO_setInterruptPin(S2, S2_XINT);
+	GPIO_enableInterrupt(S2_XINT);
+}
+void S3_XINT_init(){
+	GPIO_setInterruptType(S3_XINT, GPIO_INT_TYPE_BOTH_EDGES);
+	GPIO_setInterruptPin(S3, S3_XINT);
+	GPIO_enableInterrupt(S3_XINT);
+}
+void S4_XINT_init(){
+	GPIO_setInterruptType(S4_XINT, GPIO_INT_TYPE_BOTH_EDGES);
+	GPIO_setInterruptPin(S4, S4_XINT);
+	GPIO_enableInterrupt(S4_XINT);
+}
+
